@@ -1,0 +1,4 @@
+el Rest server aparte de servir contenido estatico te permite regresar informacion en formato Json
+
+1) npm init -y
+2)crear punto de entrada 
