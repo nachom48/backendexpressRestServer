@@ -10,7 +10,7 @@ import { router as usuariosRouter } from "../routes/usuarios.js";
 class Server {
   constructor() {
     this.app = express();
-    this.port = process.env.PORT;
+    this.port = process.env.PORT || 3000;
     this.middlewares();
     this.usuariosPath = "/api/usuarios";
     //Middleware son funciones que le agregan otra funcionalidad a nuestro web server,es una funcion que se ejecuta cuando nosotros
