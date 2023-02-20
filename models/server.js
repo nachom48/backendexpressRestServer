@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { router as usuariosRouter } from "../routes/usuarios.js";
+import { router as rolesRouter } from "../routes/roles.js";
+import { dbConnection } from "../db/config.db.js";
 //Con cors lo protejo o pongo que solo algunos pueden entrar a mi pagina web, es un middleware que lo proteje
 //Permite protejer nuestro servidor de una manera superficial pero muchos navegadores web va a dar errores
 // si el cors no esta habilitado nuestro endpoint
@@ -11,15 +13,23 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    this.middlewares();
     this.usuariosPath = "/api/usuarios";
+
+    //Conectar a base de datos
+    this.conectarDB();
+
+    this.middlewares();
+
     //Middleware son funciones que le agregan otra funcionalidad a nuestro web server,es una funcion que se ejecuta cuando nosotros
-    //levnatemos nuestro servidor
+    //levantemos nuestro servidor
 
     //llamando el metodo this.routes sejecuta el metodo que configura las rutas
     //Rutas de mi aplicacion
     this.routes();
     //En el constructor de las clases en Javascript es donde vamos a colorcar cada una de las propiedades y se ponen con el this
+  }
+  async conectarDB() {
+    await dbConnection();
   }
 
   middlewares() {
@@ -38,6 +48,7 @@ class Server {
     //aca tengo los endpoints
     //pero estan e nla carpeta router
     this.app.use("/api/usuarios", usuariosRouter);
+    this.app.use("/api/roles", rolesRouter);
   }
 
   //Con esta funcion levanto el servidor en ese puerto
