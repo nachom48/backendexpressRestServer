@@ -66,6 +66,8 @@ const usuariosPut = async (req, res = response) => {
 };
 
 const usuariosDelete = async (req, res) => {
+  //Como en el midleware le agregue en la request al Usuario validado con el Id llega el usuario tambien
+  console.log(req);
   const { id } = req.params;
 
   //Fisicamente lo borramos
@@ -73,8 +75,11 @@ const usuariosDelete = async (req, res) => {
 
   const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
 
+  const usuarioAutenticado = req.usuario;
+
   res.status(403).json({
     usuario,
+    usuarioAutenticado,
   });
 };
 

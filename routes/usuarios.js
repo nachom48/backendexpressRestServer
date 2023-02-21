@@ -1,9 +1,13 @@
 //Las rutas relacionadas a los usuarios
 
 //Aca defino las rutas relacionadas con los usuarios
-import Role from "../models/role.js";
-import Usuario from "../models/usuario.js";
-import { check } from "express-validator";
+import {
+  validarCampos,
+  validarJWT,
+  esAdminRol,
+  tieneRol,
+} from "../middlewares";
+import { check, param } from "express-validator";
 import { Router } from "express";
 import {
   usuariosDelete,
@@ -12,7 +16,6 @@ import {
   usuariosPost,
   usuariosPut,
 } from "../controllers/usuarios.controller.js";
-import validarCampos from "../middlewares/validar-campos.js";
 import {
   isRoleValid,
   isEmailValid,
@@ -61,8 +64,12 @@ router.post(
 router.delete(
   "/:id",
   [
-    check("id", "No es un Id Valido").isMongoId(),
-    check("id").custom(existeUsuarioPorId),
+    validarJWT,
+    tieneRol("Prueba Api"),
+    //Este middleware fuerza que el usuario sea administrador
+    // esAdminRol,
+    param("id", "No es un Id Valido").isMongoId(),
+    param("id").custom(existeUsuarioPorId),
     validarCampos,
   ],
   usuariosDelete

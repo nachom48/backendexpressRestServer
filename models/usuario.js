@@ -33,7 +33,10 @@ const usuarioSchema = new Schema({
 
 usuarioSchema.methods.toJSON = function () {
   //Estoy sacando la version y la password de la informacion que muestro
-  const { __v, password, ...usuario } = this.toObject();
+
+  const { __v, password, _id, ...usuario } = this.toObject();
+  //Si quiero renombrar el _id que venia antes en el res ahora le pongo usuario.uid
+  usuario.uid = _id;
   return usuario;
 };
 

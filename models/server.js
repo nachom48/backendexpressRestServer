@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import { router as usuariosRouter } from "../routes/usuarios.js";
 import { router as rolesRouter } from "../routes/roles.js";
+import { router as authRouter } from "../routes/auth/login.js";
+
 import { dbConnection } from "../db/config.db.js";
 //Con cors lo protejo o pongo que solo algunos pueden entrar a mi pagina web, es un middleware que lo proteje
 //Permite protejer nuestro servidor de una manera superficial pero muchos navegadores web va a dar errores
@@ -14,6 +16,7 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.usuariosPath = "/api/usuarios";
+    this.authPath = "api/auth";
 
     //Conectar a base de datos
     this.conectarDB();
@@ -47,6 +50,7 @@ class Server {
   routes() {
     //aca tengo los endpoints
     //pero estan e nla carpeta router
+    this.app.use("/api/auth", authRouter);
     this.app.use("/api/usuarios", usuariosRouter);
     this.app.use("/api/roles", rolesRouter);
   }
