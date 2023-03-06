@@ -1,12 +1,7 @@
 //Las rutas relacionadas a los usuarios
 
 //Aca defino las rutas relacionadas con los usuarios
-import {
-  validarCampos,
-  validarJWT,
-  esAdminRol,
-  tieneRol,
-} from "../middlewares";
+import { validarCampos, validarJWT, tieneRol } from "../middlewares/index.js";
 import { check, param } from "express-validator";
 import { Router } from "express";
 import {

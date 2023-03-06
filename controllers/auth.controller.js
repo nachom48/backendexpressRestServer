@@ -2,6 +2,7 @@ import { response } from "express";
 import Usuario from "../models/usuario.js";
 import bcryptjs from "bcryptjs";
 import { generarJWT } from "../helpers/generarJWT.js";
+import { googleVerify } from "../helpers/google-verify.js";
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -45,10 +46,56 @@ const login = async (req, res) => {
   }
 };
 
+const googleSignIn = async (req, res = response) => {
+  //aca recibe el token q viene en el body, lo desestrctura , llama a la funcion googleVerify para poder extraer info del token, el nombre img y email, luego
+  //busco un usuario cno ese email y si no existe ,creo un usuario nuevo con toda la ino que tengo y guardo el usuario ,finalmente muestro e l suario y el token
+  const { id_token } = req.body;
+
+  try {
+    const { nombre, img, email } = await googleVerify(id_token);
+
+    //GENERAR LA REFERENCIA PARA VER SI E LCORREO EXISTE NE LA BASE DE DATOS
+
+    let usuario = await Usuario.findOne({ email });
+    console.log("este es el usuario encontrado ", usuario);
+    if (!usuario) {
+      //Si no existe tengo que crearl oal usuario<
+      console.log("entro aca xq no existe el usuario");
+      const data = {
+        nombre,
+        email,
+        img,
+        password: "aa",
+        google: true,
+      };
+      console.log("esta es lad ata", data);
+      usuario = new Usuario(data);
+      console.log("Este es el usuario que estoy creando ", usuario);
+      await usuario.save();
+      console.log("aca ya deberia estar guardado");
+    }
+
+    //Si el usuario en DB
+    if (!usuario.estado) {
+      return res.status(401).json({
+        msg: "Hable con el administrador,usuario bloqueado",
+      });
+    }
+    console.log("Este es el usuario creado al final ", usuario);
+    //Generar el JWT y tengo la funcion hecha
+    const token = await generarJWT(usuario.id);
+    console.log("aca creo el token este", token);
+    res.json({
+      usuario,
+      token,
+    });
+  } catch (error) {}
+};
+
 const authPost = async (req, res) => {
-  res.status(403).json({
+  res.status().json({
     msg: "Auth Post",
   });
 };
 
-export { login, authPost };
+export { login, authPost, googleSignIn };
