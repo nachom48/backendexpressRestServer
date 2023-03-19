@@ -1,0 +1,40 @@
+ tengo que crear / categorias despues de api
+
+ y quiero qme liste las categorias q voy a tener
+
+ Galletas
+ Bebidas Frias
+ Bebidas Calientes
+ Cafes
+
+
+ 1ero ) creo las rutas en el archivo routes
+
+
+ 2ndo )  voy a usar el validarCampos tambien
+
+ 3ro ) Ocupo un controlador tambien de categorias.js
+
+ 4to ) router.get('/') hacer el get 
+
+ 5to)en el server.js se define la rutas de las categorias
+ Crece mucho los paths y se ve feo y o tra manera q es muy comun, es this.paths o this.routes = {
+ aca tnego los paths 
+ auth:'' api/auth,
+ usuarios:'api/usuarios'
+ }
+
+Necesito 5 servicios REST para la aplicacion,  necesito un get para obtener todas las categorias, osea va a ser publico 
+
+otro get un get pero con /:id , para obtener una categoria en particular por ID - publico 
+
+le mando el id y me da categoria por ID 
+
+
+otro endpoint q crea , va a ser un POST , va a ser PRIVADO , cualquier persona con un Token Valido
+al /
+
+otro endpoint para un put para actualizar, q le mando un id y me lo actualiza /:id , q sea ID de mongo,q exista,hay q hacer esas validaciones
+-privaod, cualquiera con token valido
+
+otro endpoint Delete o borrar una categoria /id delete solo si es admin, y pasa a estar activo o inactivo 

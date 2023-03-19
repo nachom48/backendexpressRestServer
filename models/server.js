@@ -3,6 +3,10 @@ import cors from "cors";
 import { router as usuariosRouter } from "../routes/usuarios.js";
 import { router as rolesRouter } from "../routes/roles.js";
 import { router as authRouter } from "../routes/auth/login.js";
+import { router as categoriasRouter } from "../routes/categorias.route.js";
+import { router as productosRouter } from "../routes/productos.route.js";
+import { router as buscarRouter } from "../routes/buscar.route.js";
+
 
 import { dbConnection } from "../db/config.db.js";
 //Con cors lo protejo o pongo que solo algunos pueden entrar a mi pagina web, es un middleware que lo proteje
@@ -53,6 +57,11 @@ class Server {
     this.app.use("/api/auth", authRouter);
     this.app.use("/api/usuarios", usuariosRouter);
     this.app.use("/api/roles", rolesRouter);
+    this.app.use("/api/categorias", categoriasRouter);
+    this.app.use("/api/productos", productosRouter);
+    this.app.use("/api/buscar", buscarRouter);
+
+
   }
 
   //Con esta funcion levanto el servidor en ese puerto
