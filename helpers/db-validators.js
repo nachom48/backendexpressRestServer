@@ -35,11 +35,21 @@ export const existeCategoriaPorId = async (id)=>{
 }
 
 
-
-
 export const existeProductoPorId = async (id)=>{
   const existeProducto = await Producto.findById(id)
   if (!existeProducto){
    throw new Error (`El id no existe ${id}`)
   }
+}
+
+
+//Valido las colecciones perimtidas
+export const validarColeccionesPermitidas = (coleccion ='', colecciones=[])=>{
+  const estaIncluida = colecciones.includes(coleccion);
+
+  if(!estaIncluida){
+    throw new Error (`La coleccion ${coleccion} no esta incluida en las colecciones permitidas que son ${colecciones}`)
+  }
+  
+  return true
 }

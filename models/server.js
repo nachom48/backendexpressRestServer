@@ -6,9 +6,11 @@ import { router as authRouter } from "../routes/auth/login.js";
 import { router as categoriasRouter } from "../routes/categorias.route.js";
 import { router as productosRouter } from "../routes/productos.route.js";
 import { router as buscarRouter } from "../routes/buscar.route.js";
+import { router as uploadsRouter } from "../routes/upload.route.js";
 
 
 import { dbConnection } from "../db/config.db.js";
+import fileUpload from "express-fileupload";
 //Con cors lo protejo o pongo que solo algunos pueden entrar a mi pagina web, es un middleware que lo proteje
 //Permite protejer nuestro servidor de una manera superficial pero muchos navegadores web va a dar errores
 // si el cors no esta habilitado nuestro endpoint
@@ -49,6 +51,14 @@ class Server {
     //Para que la informacion que viene hacia el backend mediante alguna peticion put post delete viene en formato  Json
     //Parseo y lectura del body, de esta manera cualquier info q venga la va a intentar serializar a un formato Json
     this.app.use(express.json());
+
+    //Para manejar el FileUpload o carga de archivos
+    this.app.use(fileUpload({
+      useTempFiles : true,
+      tempFileDir : '/tmp/',
+      createParentPath:true
+  }));
+
   }
 
   routes() {
@@ -60,6 +70,8 @@ class Server {
     this.app.use("/api/categorias", categoriasRouter);
     this.app.use("/api/productos", productosRouter);
     this.app.use("/api/buscar", buscarRouter);
+    this.app.use("/api/uploads", uploadsRouter);
+
 
 
   }

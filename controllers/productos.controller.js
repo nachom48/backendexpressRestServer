@@ -24,10 +24,10 @@ const obtenerProductos = async (req, res) => {
       .limit(limite)
       .skip(desde),
   ]);
+  console.log(productos)
 
-  res.status(403).json({
-    total,
-    productos,
+  res.json({
+    productos
   });
 };
 
